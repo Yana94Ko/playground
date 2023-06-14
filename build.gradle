@@ -4,19 +4,26 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'yana'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
-repositories {
-    mavenCentral()
+allprojects { //root 폴더 포함해서 모든 프로젝트와 모듈에 반영할 내용
+    repositories {
+        mavenCentral()
+    }
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+subprojects {//root 폴더 재외 하위 모듈에 반영할 내용
+    apply {//상위에서 받아온 plugins를 하위에서는 알 수 없기 때문에 다시 한번 받아와줘야 함
+        plugin('java')
+        plugin('org.springframework.boot')
+        plugin('io.spring.dependency-management')
+    }
+
+    dependencies {
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
+
