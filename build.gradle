@@ -18,6 +18,10 @@ subprojects {//root 폴더 재외 하위 모듈에 반영할 내용
     }
 
     dependencies {
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 

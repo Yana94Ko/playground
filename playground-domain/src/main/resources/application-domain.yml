@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    include: SECRET
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
