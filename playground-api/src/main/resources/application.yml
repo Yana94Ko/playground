@@ -1,12 +1,14 @@
+server:
+  port: 8083
 spring:
-  config:
-    activate:
-      on-profile: local
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: create
-    show-sql: true
+  profiles:
+    active: local
+    include:
+      - domain
+      - SECRET
+  devtools:
+    livereload:
+      enabled: true # 서버 자동 시작
 ---
 spring:
   config:

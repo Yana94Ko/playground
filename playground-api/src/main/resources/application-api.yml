@@ -1,7 +1,0 @@
-server:
-  port: 8083
-
-spring:
-  devtools:
-    livereload:
-      enabled: true # 서버 자동 시작
