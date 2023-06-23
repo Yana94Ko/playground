@@ -1,6 +1,5 @@
 package yana.playground.member;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import yana.playground.error.ErrorCode;
+import yana.playground.error.GeneralException;
 import yana.playground.member.dto.MemberDTO;
 import yana.playground.member.entity.Member;
 import yana.playground.member.mapper.MemberMapper;
@@ -22,7 +23,6 @@ import yana.playground.member.service.MemberService;
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-@Validated
 public class MemberController {
 
     private final MemberService memberService;
@@ -40,12 +40,15 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<Member> signUpMember(@RequestBody MemberDTO.Post memberDto) {
+        if(memberService.getMemberByEmail(memberDto.getEmail())!= null){
+            throw new GeneralException(ErrorCode.DUPLICATE_EMAIL);
+        }
         Member signUpMember = memberService.signUpMember(mapper.dtoToMember(memberDto));
         return new ResponseEntity<>(signUpMember, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<Member> updateMember(@Valid @RequestBody MemberDTO.Post memberDto) {
+    public ResponseEntity<Member> updateMember(@Validated @RequestBody MemberDTO.Post memberDto) {
         Member updatedMember = memberService.updateMember(mapper.dtoToMember(memberDto));
         return new ResponseEntity<>(updatedMember, HttpStatus.OK);
     }
