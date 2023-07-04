@@ -4,8 +4,11 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import yana.playground.global.mapper.MemberMapper;
+import yana.playground.member.dto.MemberRequest;
 import yana.playground.member.entity.Member;
 import yana.playground.member.entity.MemberStatus;
+import yana.playground.member.exceptions.MemberNotFoundException;
 import yana.playground.member.repository.MemberRepo;
 
 @Service
@@ -13,6 +16,7 @@ import yana.playground.member.repository.MemberRepo;
 public class MemberService {
 
     private final MemberRepo memberRepo;
+    private final MemberMapper mapper;
 
     public List<Member> getMembers() {
         return memberRepo.findAll();
@@ -28,18 +32,14 @@ public class MemberService {
     }
 
     @Transactional
-    public Member signUpMember(Member member) {
-        return memberRepo.save(member);
+    public Member signUpMember(MemberRequest.Create memberDto) {
+        Member newMember = mapper.memberCreateDtoE(memberDto);
+        return memberRepo.save(newMember);
     }
 
     @Transactional
-    public void deleteMember(Member member) {
-        Member loginMember = getMemberByEmail(member.getEmail());
-        loginMember.setStatus(MemberStatus.MEMBER_WITHDRAWAL);
-    }
-
-    @Transactional
-    public Member updateMember(Member member) {
+    public Member updateMember(MemberRequest.Update memberDto) {
+        Member newMember = mapper.memberUpdateDtoE(memberDto);
         //TODO : spring security 통한 auth 구현해서 temp코드 정리하기
         Member existingMember = getMemberByEmail(member.getEmail());
         existingMember.setEmail(member.getEmail());
