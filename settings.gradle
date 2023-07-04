@@ -1,1 +1,6 @@
 rootProject.name = 'playground'
+
+include(
+        "playground-domain",
+        "playground-api"
+)

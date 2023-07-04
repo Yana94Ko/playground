@@ -1,0 +1,24 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: beta
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
