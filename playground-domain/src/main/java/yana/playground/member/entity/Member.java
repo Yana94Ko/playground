@@ -38,12 +38,6 @@ public class Member extends Auditable {
 
     private String password;
 
-    private String postcode;
-
-    private String address;
-
-    private String detailAddress;
-
     private String realName;
 
     @Column(nullable = false, unique = true)
