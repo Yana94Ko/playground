@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yana.playground.global.mapper.MemberMapper;
 import yana.playground.member.dto.MemberRequest;
+import yana.playground.member.dto.MemberResponse;
 import yana.playground.member.entity.Member;
 import yana.playground.member.exceptions.MemberNotFoundException;
 import yana.playground.member.repository.MemberRepo;
@@ -17,12 +18,12 @@ public class MemberService {
     private final MemberRepo memberRepo;
     private final MemberMapper mapper;
 
-    public List<Member> getMembers() {
-        return memberRepo.findAll();
+    public List<MemberResponse> getMembers() {
+        return mapper.memberListEtoD(memberRepo.findAll());
     }
 
-    public Member getMember(Long id) {
-        return memberRepo.findById(id).orElseThrow(() -> new MemberNotFoundException(id));
+    public MemberResponse getMember(Long id) {
+        return mapper.memberEtoD(memberRepo.findById(id).orElseThrow(() -> new MemberNotFoundException(id)));
     }
 
     //temp
@@ -31,18 +32,18 @@ public class MemberService {
     }
 
     @Transactional
-    public Member signUpMember(MemberRequest.Create memberDto) {
+    public MemberResponse signUpMember(MemberRequest.Create memberDto) {
         Member newMember = mapper.memberCreateDtoE(memberDto);
-        return memberRepo.save(newMember);
+        return mapper.memberEtoD(memberRepo.save(newMember));
     }
 
     @Transactional
-    public Member updateMember(MemberRequest.Update memberDto) {
+    public MemberResponse updateMember(MemberRequest.Update memberDto) {
         Member newMember = mapper.memberUpdateDtoE(memberDto);
         //TODO : spring security 통한 auth 구현해서 temp코드 정리하기
         Member existingMember = getMemberByEmail(newMember.getEmail());
         existingMember.updateMember(newMember);
-        return existingMember;
+        return mapper.memberEtoD(existingMember);
     }
 
     @Transactional

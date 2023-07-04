@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import yana.playground.error.ErrorCode;
 import yana.playground.error.GeneralException;
 import yana.playground.member.dto.MemberRequest;
-import yana.playground.member.entity.Member;
+import yana.playground.member.dto.MemberResponse;
 import yana.playground.member.service.MemberService;
 
 @RestController
@@ -27,33 +27,32 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public List<Member> getMembers() {
+    public List<MemberResponse> getMembers() {
         return memberService.getMembers();
     }
 
     @GetMapping("/{id}")
-    public Member getMember(@PathVariable Long id) {
+    public MemberResponse getMember(@PathVariable Long id) {
         return memberService.getMember(id);
     }
 
     @PostMapping
-    public ResponseEntity<Member> signUpMember(@Valid @RequestBody MemberRequest.Create memberDto) {
+    public ResponseEntity<MemberResponse> signUpMember(@Valid @RequestBody MemberRequest.Create memberDto) {
         if(memberService.getMemberByEmail(memberDto.getEmail())!= null){
             throw new GeneralException(ErrorCode.DUPLICATE_EMAIL);
         }
-        Member signUpMember = memberService.signUpMember(memberDto);
+        MemberResponse signUpMember = memberService.signUpMember(memberDto);
         return new ResponseEntity<>(signUpMember, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<Member> updateMember(@Valid @RequestBody MemberRequest.Update memberDto) {
-        Member updatedMember = memberService.updateMember(memberDto);
+    public ResponseEntity<MemberResponse> updateMember(@Valid @RequestBody MemberRequest.Update memberDto) {
+        MemberResponse updatedMember = memberService.updateMember(memberDto);
         return new ResponseEntity<>(updatedMember, HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteMember(@Valid @RequestBody MemberRequest.Delete memberDto) {
-
         try {
             memberService.deleteMember(memberDto);
             return new ResponseEntity<>("회원 삭제 성공", HttpStatus.OK);
