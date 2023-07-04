@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import yana.playground.global.mapper.MemberMapper;
 import yana.playground.member.dto.MemberRequest;
 import yana.playground.member.entity.Member;
-import yana.playground.member.entity.MemberStatus;
 import yana.playground.member.exceptions.MemberNotFoundException;
 import yana.playground.member.repository.MemberRepo;
 
@@ -41,15 +40,8 @@ public class MemberService {
     public Member updateMember(MemberRequest.Update memberDto) {
         Member newMember = mapper.memberUpdateDtoE(memberDto);
         //TODO : spring security 통한 auth 구현해서 temp코드 정리하기
-        Member existingMember = getMemberByEmail(member.getEmail());
-        existingMember.setEmail(member.getEmail());
-        existingMember.setPassword(member.getPassword());
-        existingMember.setNickname(member.getNickname());
-        existingMember.setPostcode(member.getPostcode());
-        existingMember.setAddress(member.getAddress());
-        existingMember.setDetailAddress(member.getDetailAddress());
-        existingMember.setPhone(member.getPhone());
-        existingMember.setRealName(member.getRealName());
+        Member existingMember = getMemberByEmail(newMember.getEmail());
+        existingMember.updateMember(newMember);
         return existingMember;
     }
 

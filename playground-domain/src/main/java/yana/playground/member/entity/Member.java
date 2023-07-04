@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,12 +18,10 @@ import lombok.Setter;
 import yana.playground.global.Auditable;
 
 @Getter
-//TODO : setter의 경우 전체 적용하는게 맞는지 고민해보기
-@Setter
+@Builder
 @Entity
 @Table(name = "MEMBER")
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
 public class Member extends Auditable {
 
@@ -55,7 +54,12 @@ public class Member extends Auditable {
 //    private String provider;
 //
 //    private String providerId;
-
-    @Enumerated(value = EnumType.STRING)
-    private MemberStatus status = MemberStatus.MEMBER_ACTIVE;
+    public void updateMember(Member updateMember){
+        Optional.ofNullable(updateMember.getEmail()).ifPresent(email -> this.email = email);
+        Optional.ofNullable(updateMember.getNickname()).ifPresent(nickname -> this.nickname = nickname);
+        Optional.ofNullable(updateMember.getPassword()).ifPresent(password -> this.password = password);
+        Optional.ofNullable(updateMember.getRealName()).ifPresent(realName -> this.realName = realName);
+        Optional.ofNullable(updateMember.getPhone()).ifPresent(phone -> this.phone = phone);
+        Optional.ofNullable(updateMember.getAddress()).ifPresent(address -> this.address = address);
+    }
 }
