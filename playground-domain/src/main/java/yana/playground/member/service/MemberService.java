@@ -45,4 +45,9 @@ public class MemberService {
         return existingMember;
     }
 
+    @Transactional
+    public void deleteMember(MemberRequest.Delete memberDto) {
+        Member loginMember = getMemberByEmail(memberDto.getEmail());
+        loginMember.deleteMember(loginMember);
+    }
 }

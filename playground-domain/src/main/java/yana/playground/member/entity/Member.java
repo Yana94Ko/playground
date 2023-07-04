@@ -62,4 +62,7 @@ public class Member extends Auditable {
         Optional.ofNullable(updateMember.getPhone()).ifPresent(phone -> this.phone = phone);
         Optional.ofNullable(updateMember.getAddress()).ifPresent(address -> this.address = address);
     }
+    public void deleteMember(Member deleteMember){
+        this.status = MemberStatus.MEMBER_WITHDRAWAL;
+    }
 }
