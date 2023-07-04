@@ -4,21 +4,24 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import yana.playground.member.exceptions.MemberNotFoundException;
 
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-    /**
-     *  @Validated로 binding error 발생시 발생
+    /*
+     *  @Validated로 Service에서 binding error 발생시 처리
      */
-    @ExceptionHandler
+    @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
         return handleExceptionInternal(e, ErrorCode.VALIDATION_ERROR, request);
     }
@@ -47,10 +50,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, ErrorCode.INTERNAL_ERROR, request);
     }
 
-//    @Override
-//    protected ResponseEntity<Object> handleExceptionInternal(Exception e, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-//        return super.handleExceptionInternal(e, ErrorCode.valueOf(statusCode), headers, statusCode, request);
-//    }
+    /*
+     *  @Valid, @Validated로 Controller에서 binding error 발생시 처리
+     */
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception e, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+        if( e instanceof MethodArgumentNotValidException){
+            return handleExceptionInternal(e, ErrorCode.VALIDATION_ERROR, request);
+        }
+        return super.handleExceptionInternal(e, body, headers, statusCode, request);
+    }
 
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorCode errorCode, WebRequest request) {
         return handleExceptionInternal(e, errorCode, HttpHeaders.EMPTY, errorCode.getHttpStatus(), request);
