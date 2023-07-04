@@ -20,6 +20,7 @@ public enum ErrorCode {
     SPRING_BAD_REQUEST(10001, HttpStatus.BAD_REQUEST, "Spring-detected bad request"),
     VALIDATION_ERROR(10002, HttpStatus.BAD_REQUEST, "Validation error"),
     NOT_FOUND(10003, HttpStatus.NOT_FOUND, "Requested resource is not found"),
+    MEMBER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Member not found with ID: %d"),
 
     INTERNAL_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
     SPRING_INTERNAL_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "Spring-detected internal error"),
@@ -45,6 +46,9 @@ public enum ErrorCode {
     }
 
     public String getMessage(Throwable e) {
+        return this.getMessage(this.getMessage() + " - " + e.getMessage());
+    }
+    public String getMessage(Throwable e, Long id) {
         return this.getMessage(this.getMessage() + " - " + e.getMessage());
     }
 

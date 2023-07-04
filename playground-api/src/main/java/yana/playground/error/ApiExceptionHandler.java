@@ -30,7 +30,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatchException( MethodArgumentTypeMismatchException e, WebRequest request) {
         return handleExceptionInternal(e, ErrorCode.BAD_REQUEST, request);
     }
-
+    @ExceptionHandler(MemberNotFoundException.class)
+    protected ResponseEntity<ApiErrorResponse> handleMemberNotFoundException(MemberNotFoundException e, WebRequest request) {
+        ErrorCode errorCode = ErrorCode.MEMBER_NOT_FOUND;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMemberId());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
     @ExceptionHandler
     protected ResponseEntity<Object> general(GeneralException e, WebRequest request) {
         return handleExceptionInternal(e, e.getErrorCode(), request);

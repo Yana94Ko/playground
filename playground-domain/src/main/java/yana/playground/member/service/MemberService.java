@@ -19,7 +19,7 @@ public class MemberService {
     }
 
     public Member getMember(Long id) {
-        return memberRepo.findById(id).orElseThrow(IllegalAccessError::new);
+        return memberRepo.findById(id).orElseThrow(() -> new MemberNotFoundException(id));
     }
 
     //temp
