@@ -1,5 +1,6 @@
 package yana.playground.member.entity;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -47,6 +48,13 @@ public class Member extends Auditable {
 
     @Column(nullable = false, unique = true)
     private String phone;
+
+    @Enumerated(value = EnumType.STRING)
+    @Builder.Default
+    private MemberStatus status = MemberStatus.MEMBER_ACTIVE;
+
+    @Embedded
+    private Address address;
 
 //    private String oauthId;
 //
