@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @MappedSuperclass
-//TODO : @EntityListeners와 spring data jpa의 @CreatedDate, @LastModifiedDate 이용해,
+// TODO : @EntityListeners와 spring data jpa의 @CreatedDate, @LastModifiedDate 이용해,
 // JPA 가 아닌 Spring data jpa 단에서 끝내도록 수정하기
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable {
