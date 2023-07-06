@@ -40,7 +40,7 @@ public class MemberService {
     @Transactional
     public MemberResponse updateMember(MemberRequest.Update memberDto) {
         Member newMember = mapper.memberUpdateDtoE(memberDto);
-        //TODO : spring security 통한 auth 구현해서 temp코드 정리하기
+        // TODO : spring security 통한 auth 구현해서 temp코드 정리하기
         Member existingMember = getMemberByEmail(newMember.getEmail());
         existingMember.updateMember(newMember);
         return mapper.memberEtoD(existingMember);
