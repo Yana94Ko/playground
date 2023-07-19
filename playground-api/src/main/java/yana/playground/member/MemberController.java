@@ -39,7 +39,7 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<MemberResponse> signUpMember(@Valid @RequestBody MemberRequest.Create memberDto) {
-        if(memberService.getMemberByEmail(memberDto.getEmail())!= null){
+        if(memberService.getMemberByEmail(memberDto.getEmail()).isPresent()){
             throw new GeneralException(ErrorCode.DUPLICATE_EMAIL);
         }
         MemberResponse signUpMember = memberService.signUpMember(memberDto);
