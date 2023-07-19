@@ -26,6 +26,7 @@ import yana.playground.member.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping
     public List<MemberResponse> getMembers() {
@@ -42,6 +43,7 @@ public class MemberController {
         if(memberService.getMemberByEmail(memberDto.getEmail()).isPresent()){
             throw new GeneralException(ErrorCode.DUPLICATE_EMAIL);
         }
+        memberDto.setPassword(bCryptPasswordEncoder.encode(memberDto.getPassword()));
         MemberResponse signUpMember = memberService.signUpMember(memberDto);
         return new ResponseEntity<>(signUpMember, HttpStatus.OK);
     }

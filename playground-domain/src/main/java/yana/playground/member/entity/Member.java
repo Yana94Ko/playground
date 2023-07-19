@@ -1,20 +1,23 @@
 package yana.playground.member.entity;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import yana.playground.global.Auditable;
 
 @Getter
@@ -49,6 +52,11 @@ public class Member extends Auditable {
     @Embedded
     private Address address;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(value = EnumType.STRING)
+    @Builder.Default
+    private List<MemberRoles> roles = new ArrayList<MemberRoles>(List.of(MemberRoles.USER));
+
 //    private String oauthId;
 //
 //    private String provider;
@@ -65,4 +73,5 @@ public class Member extends Auditable {
     public void deleteMember(Member deleteMember){
         this.status = MemberStatus.MEMBER_WITHDRAWAL;
     }
+
 }

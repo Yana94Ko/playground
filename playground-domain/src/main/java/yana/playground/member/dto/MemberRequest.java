@@ -5,11 +5,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yana.playground.member.entity.MemberStatus;
+import yana.playground.member.entity.MemberRoles;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberRequest {
@@ -28,6 +30,8 @@ public class MemberRequest {
         @Valid
         private AddressDto address;
         private MemberStatus status;
+        private List<MemberRoles> roles;
+
     }
     @Getter
     public static class Update {
