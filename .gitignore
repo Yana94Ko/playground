@@ -178,4 +178,5 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,gradle
 
-application-SECRET.yml
+application-DOMAIN-SECRET.yml
+application-API-SECRET.yml

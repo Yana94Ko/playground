@@ -1,11 +1,13 @@
 server:
   port: 8083
+
 spring:
   profiles:
     active: local
     include:
       - domain
-      - SECRET
+      - API-SECRET
+      - DOMAIN-SECRET
   devtools:
     livereload:
       enabled: true # 서버 자동 시작
