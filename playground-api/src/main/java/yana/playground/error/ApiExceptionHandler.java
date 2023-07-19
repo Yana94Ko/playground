@@ -36,7 +36,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MemberNotFoundException.class)
     protected ResponseEntity<ApiErrorResponse> handleMemberNotFoundException(MemberNotFoundException e, WebRequest request) {
         ErrorCode errorCode = ErrorCode.MEMBER_NOT_FOUND;
-        String errorMessage = String.format(errorCode.getMessage(), e.getMemberId());
+        String errorMessage = String.format(errorCode.getMessage(), e.getMemberId()==null ? e.getMemberEmail(): e.getMemberId());
         ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
         return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
     }
