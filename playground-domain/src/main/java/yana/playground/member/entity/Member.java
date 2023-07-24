@@ -55,7 +55,7 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = EnumType.STRING)
     @Builder.Default
-    private List<MemberRoles> roles = new ArrayList<MemberRoles>(List.of(MemberRoles.USER));
+    private List<MemberRoles> roles = new ArrayList<>(List.of(MemberRoles.ROLE_USER));
 
 //    private String oauthId;
 //

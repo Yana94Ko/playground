@@ -51,8 +51,7 @@ public class SpringSecurityConfiguration {
                             .requestMatchers("/login").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
                     //hasRole : requestMatchers에 작성된 경로에 대해서는 해당 권한이 있다면 접근 가능하도록 인가
-//                    .requestMatchers("/api/admin/**")
-//                            .hasRole("ADMIN");
+                            .requestMatchers(HttpMethod.GET, "/api/members").hasRole("ADMIN")
                     //hasAnyRole : requestMatchers에 작성된 경로에 대해서는 나열된 권한중 어느 하나라도 포함된다면 접근 가능하도록 인가
 //                    .requestMatchers("/api/master/**")
 //                            .hasAnyRole("ADMIN", "MASTER")
