@@ -69,7 +69,7 @@ public class JwtAuthenticationProcessingFilter extends UsernamePasswordAuthentic
         cookie.setMaxAge(JwtProperties.EXPIRATION_TIME);
         cookie.setPath("/");
         response.addCookie(cookie);
-        response.sendRedirect("/api/members");
+        response.sendRedirect("/");
     }
 
     /**

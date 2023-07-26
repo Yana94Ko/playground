@@ -17,9 +17,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import yana.playground.member.service.MemberService;
 import yana.playground.security.jwt.JwtAuthenticationProcessingFilter;
 import yana.playground.security.jwt.JwtAuthorizationFilter;
+import yana.playground.security.jwt.JwtProperties;
 import yana.playground.security.jwt.JwtUtils;
 
 @Configuration
@@ -82,7 +84,13 @@ public class SpringSecurityConfiguration {
                 )
 //                //rememberMe : JSESSIONID이 만료되거나 쿠키가 없을 지라도 어플리케이션이 사용자를 기억하는 기능
 //                .rememberMe(withDefaults())
-                .logout(withDefaults())
+                .logout(logout -> logout
+                        // .logoutUrl("/logout") // post 방식으로만 동작
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // get 방식으로도 동작
+                        .logoutSuccessUrl("/")
+                        .deleteCookies(JwtProperties.COOKIE_NAME)
+                        .invalidateHttpSession(true)
+                )
                 //getOrBuild : 기존의 .build()와 달리, 이미 빌드된 경우 지정한 구성으로 인스턴스를 반환하고 그렇지 않은 경우 빌드함.
                 .getOrBuild();
     }
