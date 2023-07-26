@@ -47,7 +47,7 @@ public class JwtAuthenticationProcessingFilter extends UsernamePasswordAuthentic
                     new ArrayList<>()
             );
 
-            return getAuthenticationManager(). authenticate(authRequest);
+            return getAuthenticationManager().authenticate(authRequest);
         }catch (Exception e){
             log.error("request mapping 작업중 에러 발생");
             e.printStackTrace();
@@ -60,6 +60,7 @@ public class JwtAuthenticationProcessingFilter extends UsernamePasswordAuthentic
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        log.error("성공적으로 로그인");
         User user = (User)authResult.getPrincipal();
         String token = jwtUtils.createToken(user);
 
