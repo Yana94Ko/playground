@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import yana.playground.member.service.MemberService;
+import yana.playground.security.jwt.CustomAccessDeniedHandler;
 import yana.playground.security.jwt.JwtAuthenticationProcessingFilter;
 import yana.playground.security.jwt.JwtAuthorizationFilter;
 import yana.playground.security.jwt.JwtProperties;
@@ -31,6 +32,8 @@ public class SpringSecurityConfiguration {
 
     private final MemberService memberService;
     private final JwtUtils jwtUtils;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -81,6 +84,10 @@ public class SpringSecurityConfiguration {
                 ).addFilterBefore(
                         new JwtAuthorizationFilter(memberService, jwtUtils),
                         BasicAuthenticationFilter.class
+                )
+                .exceptionHandling((exceptionHandling)->exceptionHandling
+                        .authenticationEntryPoint(authenticationEntryPoint) //customEntryPoint
+                        .accessDeniedHandler(accessDeniedHandler)
                 )
 //                //rememberMe : JSESSIONID이 만료되거나 쿠키가 없을 지라도 어플리케이션이 사용자를 기억하는 기능
 //                .rememberMe(withDefaults())

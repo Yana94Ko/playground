@@ -1,14 +1,20 @@
 package yana.playground.error;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.validation.ConstraintViolationException;
+import java.security.SignatureException;
+import javax.naming.AuthenticationException;
+import javax.naming.MalformedLinkException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -16,9 +22,60 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import yana.playground.member.exceptions.MemberNotFoundException;
 
 @Slf4j
-@RestControllerAdvice(annotations = {RestController.class})
+@RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-    /*
+    /**
+     * Spring security 예외처리
+     */
+    // 가장 먼저 처리될 예외들을 상위에 배치
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException e) {
+        ErrorCode errorCode = ErrorCode.ACCESSDENIED_ERROR;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
+    @ExceptionHandler({InsufficientAuthenticationException.class})
+    public ResponseEntity<Object> handleAccessDeniedException(InsufficientAuthenticationException e) {
+        ErrorCode errorCode = ErrorCode.INSUFFICIENTAUTHENTICATION_ERROR;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler({SignatureException.class})
+    public ResponseEntity<Object> handleSignatureException(SignatureException e) {
+        ErrorCode errorCode = ErrorCode.JWT_SIGNATURE_ERROR;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler({MalformedJwtException.class})
+    public ResponseEntity<Object> handleMalformedLinkException(MalformedJwtException e) {
+        ErrorCode errorCode = ErrorCode.JWT_MALFORMED_ERROR;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler({ExpiredJwtException.class})
+    public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException e) {
+        ErrorCode errorCode = ErrorCode.JWT_EXPIRED_ERROR;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<Object> handleAuthenticationexception(AuthenticationException e) {
+        ErrorCode errorCode = ErrorCode.AUTHENTICATION_ERROR;
+        String errorMessage = String.format(errorCode.getMessage(), e.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse(false, errorCode.getCode(), errorMessage);
+        return new ResponseEntity<>(errorResponse, errorCode.getHttpStatus());
+    }
+
+    /**
      *  @Validated로 Service에서 binding error 발생시 처리
      */
     @ExceptionHandler(ConstraintViolationException.class)

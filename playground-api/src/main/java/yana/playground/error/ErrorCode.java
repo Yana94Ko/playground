@@ -24,7 +24,15 @@ public enum ErrorCode {
 
     INTERNAL_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
     SPRING_INTERNAL_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "Spring-detected internal error"),
-    DATA_ACCESS_ERROR(20002, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error")
+    DATA_ACCESS_ERROR(20002, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error"),
+
+    // Spring security 관련 예외처리
+    AUTHENTICATION_ERROR(403, HttpStatus.FORBIDDEN, "AuthenticationException, authentication fails"),
+    ACCESSDENIED_ERROR(403, HttpStatus.FORBIDDEN, "AccessDeniedException, access is denied as the authentication does not hold a required authority or ACL privilege"),
+    INSUFFICIENTAUTHENTICATION_ERROR(403, HttpStatus.FORBIDDEN, "InsufficientAuthenticationException, access is denied as the authentication does not provide a sufficient level of trust"),
+    JWT_SIGNATURE_ERROR(403, HttpStatus.FORBIDDEN, "SignatureException, The secret key for generating and decrypting JWT is different"),
+    JWT_MALFORMED_ERROR(403, HttpStatus.FORBIDDEN, "MalformedJwtException, An attempt to decrypt a forged JWT has been detected"),
+    JWT_EXPIRED_ERROR(403, HttpStatus.FORBIDDEN, "ExpiredJwtException, A decryption attempt was detected for an expired JWT")
     ;
 
     private final Integer code;
