@@ -1,8 +1,6 @@
 package yana.playground.security;
 
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +27,6 @@ import yana.playground.security.jwt.JwtUtils;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfiguration {
-
     private final MemberService memberService;
     private final JwtUtils jwtUtils;
     private final AuthenticationEntryPoint authenticationEntryPoint;

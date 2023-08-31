@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import yana.playground.member.entity.MemberStatus;
-import yana.playground.member.entity.MemberRoles;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberRequest {

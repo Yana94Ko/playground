@@ -5,7 +5,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import jakarta.validation.ConstraintViolationException;
 import java.security.SignatureException;
 import javax.naming.AuthenticationException;
-import javax.naming.MalformedLinkException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -3,7 +3,6 @@ package yana.playground.member.entity;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -27,7 +26,6 @@ import yana.playground.global.Auditable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
